@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>酒店分房</title>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<style type="text/css">
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
+    ul, li {
+        list-style: none;
+    }
+
+    li {
+        float: left;
+        list-style-type: none;
+    }
+
+    #search {
+        position: relative;
+    }
+
+    .right_button {
+        height: 20%;
+        width: 80%;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+        /*position:absolute;*/
+        /*top: 65%;*/
+        /*left: 82.5%;*/
+        /*margin: 7px;*/
+    }
+
+    .form-group {
+        margin: 10px;
+    }
+
+    .header {
+        min-height: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid darkgray;
+        box-sizing: border-box;
+    }
+
+    .center-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .desk-box {
+        width: 60%;
+        /* padding: 0 20px; */
+        box-sizing: border-box;
+        border-right: 1px solid darkgray;
+    }
+
+    .table-box {
+        height: 700px;
+        display: flex;
+        flex-direction: column;
+        width: 40%;
+        position: relative;
+        justify-content: center;
+    }
+
+    .table_person {
+        width: 100%;
+    }
+
+
+    .desk-li p {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 0;
+    }
+
+    .desk-li p .span {
+        text-align: center;
+        line-height: 20px;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+    }
+
+    .desk-list {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+
+    .table td, .table th {
+        padding: 0.15rem;
+        font-size: 18px;
+    }
+
+    .search_style_button {
+        margin: 7px;
+    }
+
+    .yuan {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        background: #DEE2E6;
+        border-color: #1b1e21;
+    }
+
+    .right_1 {
+        margin: 20px;
+        display: flex;
+        flex-direction: inherit;
+        justify-content: center;
+    }
+
+    .right_2 {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    #rz {
+        margin: 10px;
+    }
+
+    .right_3 {
+        margin: 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .btn {
+        background-color: rgba(22, 155, 213, 1);
+        border-color: rgba(22, 155, 213, 1);
+    }
+
+    .left_select {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .left_xiala {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    /*.form{*/
+    /*    top: 0;*/
+    /*}*/
+
+</style>
+<body>
+<!-- 顶部 -->
+<div class="header" style="padding: 15px;width: 100%;">
+    <div>
+        <h3>2020年中北年会签到管理</h3>
+    </div>
+    <!--    <div style="text-align: right;width: 80%;">-->
+    <!--        <button type="button" class="btn btn-primary" style="margin: 0 10px;" data-whatever="@mdo"-->
+    <!--                data-target="#exampleModal"-->
+    <!--                data-toggle="modal">导入-->
+    <!--        </button>-->
+    <!--        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"-->
+    <!--             aria-hidden="true">-->
+    <!--            <div class="modal-dialog" role="document">-->
+    <!--                <div class="modal-content">-->
+    <!--                    <div class="modal-header">-->
+    <!--                        <h5 class="modal-title" id="exampleModalLabel">上传文件</h5>-->
+    <!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+    <!--                            <span aria-hidden="true">&times;</span>-->
+    <!--                        </button>-->
+    <!--                    </div>-->
+    <!--                    <div class="modal-body">-->
+    <!--                        <div class="container">-->
+    <!--                            <div class="page-header">-->
+    <!--                                <form id="uploadForm">-->
+    <!--                                    <div class="form-group" enctype='multipart/form-data'>-->
+    <!--                                        <div class="h4">上传Excel文件</div>-->
+    <!--                                        <div class="fileinput fileinput-new" data-provides="fileinput"-->
+    <!--                                             id="exampleInputUpload">-->
+    <!--                                            <div class="fileinput-new thumbnail"-->
+    <!--                                                 style="width: 200px;height: auto;max-height:150px;">-->
+
+    <!--                                            </div>-->
+    <!--                                            <div class="fileinput-preview fileinput-exists thumbnail"-->
+    <!--                                                 style="max-width: 200px; max-height: 150px;"></div>-->
+    <!--                                            <div>-->
+    <!--                        <span class="">-->
+    <!--                            <span class="fileinput-new">选择文件</span>-->
+    <!--                            <input type="file" name="file" id="file" accept="application/vnd.ms-excel"/>-->
+    <!--                        </span>-->
+    <!--                                            </div>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                </form>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </div>-->
+    <!--                    <div class="modal-footer">-->
+    <!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>-->
+    <!--                        <button type="button" class="btn btn-primary" id="uploadSubmit">上传</button>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+
+    <!--        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change_table" id="ChangeTable">-->
+    <!--            改变桌次-->
+    <!--        </button>-->
+    <!--        <div class="modal fade" id="change_table" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"-->
+    <!--             aria-hidden="true">-->
+    <!--            <div class="modal-dialog" role="document">-->
+    <!--                <div class="modal-content">-->
+    <!--                    <div class="modal-header">-->
+    <!--                        <h5 class="modal-title" id="exampleModalLabel">编辑桌号</h5>-->
+    <!--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+    <!--                            <span aria-hidden="true">&times;</span>-->
+    <!--                        </button>-->
+    <!--                    </div>-->
+    <!--                    <div class="modal-body">-->
+    <!--                        <p id='SelectChangeTableNumber'>已选择的4位人员修改桌号为：</p><input type="text" value=""-->
+    <!--                                                                                 placeholder="请输入需要修改的桌子编号"-->
+    <!--                                                                                 id="EditTable">-->
+    <!--                    </div>-->
+    <!--                    <div class="modal-footer">-->
+    <!--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>-->
+    <!--                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmEdit">保存</button>-->
+    <!--                    </div>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--        <button type="button" class="btn btn-primary" id="export">导出</button>-->
+    <!--    </div>-->
+</div>
+<!-- 中间内容 -->
+<div class="center-container">
+    <!-- 左边桌位显示 -->
+    <div class="desk-box">
+        <div class="desk-list" id="weizhi">
+            <div class="form">
+                <form class="form-inline" id="search">
+                    <div class="form-group">
+                        <input type="" class="form-control" placeholder="姓名" id="name">
+                    </div>
+                    <div class="form-group">
+                        <input type="" class="form-control" id="bm" placeholder="部门">
+                    </div>
+                    <div class="form-group">
+                        <input type="" class="form-control" id="yqr" placeholder="邀请人">
+                    </div>
+                    <div class="form-group">
+                        <input type="" class="form-control" id="fgs" placeholder="分公司">
+                    </div>
+                    <div class="form-group">
+                        <input type="" class="form-control" id="roomNum" placeholder="房间号">
+                    </div>
+                    <div class="left_select">
+                        <div class="left_xiala">
+                            <div class="form-group">
+                                <select class="form-control" id="catalog">
+                                    <option value=-1>人员类型</option>
+                                    <option value=1>嘉宾</option>
+                                    <option value=2>分公司</option>
+                                    <option value=3>集团总部</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="signState">
+                                    <option value=-1>是否签到</option>
+                                    <option value='1'>是</option>
+                                    <option value='0'>否</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" id="jd">
+                                    <option value=-1>酒店</option>
+                                    <option value='2'>A酒店</option>
+                                    <option value='0'>B酒店</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="right_button">
+                            <button type="reset" class="button btn btn-primary btn-sm search_style_button">重置</button>
+                            <div type="" class="button btn btn-primary btn-sm search_style_button" id="ButtonSearch">搜索
+                            </div>
+                        </div>
+
+                    </div>
+                    <input type="hidden" class="form-control" id="order" placeholder="排序" value="1">
+                </form>
+            </div>
+            <div class="table_person">
+                <table class="table table-hover" id="tables">
+                    <thead class="thead">
+                    <tr class="table_head">
+                        <th><input type="checkbox" id="AllElection"></th>
+                        <th>姓名</th>
+                        <th>报名类型</th>
+                        <th>桌号</th>
+                        <th>酒店</th>
+                        <th>房间号</th>
+                        <th>签到时间</th>
+                    </tr>
+                    </thead>
+                    <tbody class="edit_person" id="tuodong">
+                    </tbody>
+                </table>
+                <div class="page" id="Page"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 右边列表 -->
+    <div class="table-box">
+        <div class="right_1" style="display: none">
+            <div class="form-group">
+                <input type="" class="form-control" id="qdm" placeholder="签到码">
+            </div>
+            <div class="yuan">签到</div>
+        </div>
+        <div class="right_2">
+            <div class="form-group">
+                <select class="form-control" id="jdmc">
+                    <option value=-1>酒店</option>
+                    <option value='2'>A酒店</option>
+                    <option value='0'>B酒店</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" id="fjh" placeholder="房间号" value="">
+            </div>
+            <div class="right_rz">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="rz">入住</button>
+            </div>
+        </div>
+        <div class="right_3">
+            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter"
+                    id="send_text">发送短信通知
+            </button>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">请核对信息</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="title_info">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="send">确认发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="./js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+            // var post = 'http://106.12.216.238:8080/';
+            var post = 'https://2020.ccnc.cc/';
+            // var post = '127.0.0.1:8866';
+            //初始化数据
+            initData();
+            //左侧数据
+            var data_info = [];
+            //右侧数据
+            var data_person = {};
+            //排桌规则
+            var desk_rule = [];
+
+            //获取排桌规则ajax
+            function initData() {
+                //获取排桌规则ajax
+                $.ajax({
+                    url: post + "rest/hotel/gethotel.htm",
+                    type: 'POST',
+                    dataType: 'json',
+                    context: document.body,
+                    success: function (res) {
+                        console.log(res);
+                        var hotel = '';
+                        res['hotelList'].forEach(function (items, index) {
+                            hotel += `<option value=${items['id']}>${items['hotelName']}</option>`
+                        })
+                        $('#jd').html(hotel);
+                        $('#jdmc').html(hotel);
+                    }
+                });
+                $.ajax({
+                    url: post + "rest/hotel/rzlist.htm",
+                    data: {'status': '0'},
+                    type: 'POST',
+                    dataType: 'json',
+                    context: document.body,
+                    success: function (res) {
+                        if (res['state'] = 1) {
+                            console.log(res);
+                            AllPerson(res['resList'])
+                        } else {
+                            alert('请求失败')
+                        }
+                    }
+                });
+
+            }
+
+            //生成右侧所有人员
+            function AllPerson(PersonList) {
+                var person_position = '';
+                PersonList.forEach(function (items, index) {
+                    //var signtype = items['signtype'].replace('中北工程设计咨询有限公司', '')
+                    var person = `<tr data-id="${items['userId']}">
+                                        <td><input type="checkbox" value="" class="single"></td>
+                                        <td data-name="${items['name']}">${items['name']}</td>
+                                        <td data-signtype="${items['signtype']}">${items['signtype']}</td>
+                                        <td data-deskName="${items['deskName']}">${items['deskName']}</td>
+                                        <td data-hotelName="${items['hotelName']}">${items['hotelName']}</td>
+                                        <td data-roomNum="${items['roomNum']}">${items['roomNum']}</td>
+                                        <td data-signDate="${items['signDate']}">${items['signDate']}</td>
+                                    </tr>`;
+                    person_position += person
+                });
+                $(".edit_person").html(person_position);
+            }
+
+            //根据人员报名状态
+            function judgeup(state) {
+                var mystate = '未报名';
+                if (state == 1) {
+
+                    mystate = '已报名'
+                }
+                return mystate
+            }
+
+            //根据人员签到状态
+            function judgein(state) {
+                var mystate = '否';
+                if (state == 2) {
+                    mystate = '是'
+                }
+                return mystate
+            }
+
+            //默认全选不选（右侧）
+            function intoSelect() {
+                $("#AllElection").attr("checked", false);
+            }
+
+            //点击全选的状态（右侧）
+            $(".table_head").on("click", '#AllElection', function () {
+                if ($(this).prop("checked")) {
+                    for (let i = 0; i < $(".single").length; i++) {
+                        $(".single")[i].checked = true;
+                    }
+                } else {
+                    for (let i = 0; i < $(".single").length; i++) {
+                        $(".single")[i].checked = false;
+                    }
+                }
+            });
+
+            //点击单个选择的状态改变
+            $(".edit_person").on("click", '.single', function () {
+                var isAll = true;
+                for (let i = 0; i < $(".single").length; i++) {
+                    if ($(".single")[i].checked == false) {
+                        isAll = false;
+                        $("#AllElection").prop("checked", false);
+                    }
+                }
+                if (isAll) {
+                    $("#AllElection").prop("checked", true);
+                }
+            });
+
+            //点击搜索执行（右侧）
+            $("#ButtonSearch").on("click", function () {
+                console.log('搜索条件--------------',
+                    '人员名称：', $('#name').val(),
+                    '部门：', $('#bm').val(),
+                    '邀请人：', $('#yqr').val(),
+                    '分公司：', $('#fgs').val(),
+                    '房间号：', $('#roomNum').val(),
+                    '人员类型：', $('#catalog').val(),
+                    '是否签到', $('#signState').val(),
+                    '酒店', $('#jd').val());
+                var jd = $("#jd").find("option:selected").text();
+                if ($('#jd').val() == '0') {
+                    jd = '';
+                }
+                GetSearchData(
+                    $('#name').val(),
+                    $('#bm').val(),
+                    $('#yqr').val(),
+                    $('#fgs').val(),
+                    $('#roomNum').val(),
+                    $('#catalog').val(),
+                    $('#signState').val(),
+                    jd,
+                )
+            });
+
+            //搜索，分页，排序公用的
+            function GetSearchData(name, bm, yqr, fgs, roomNum, catalog, signState, hotelName) {
+                var mydata = {
+                    'name': name,
+                    'bm': bm,
+                    'fgs': fgs,
+                    'yqr': yqr,
+                    'catalog': catalog,
+                    'signState': signState,
+                    'hotelName': hotelName,
+                    'roomNum': roomNum
+                };
+                if (mydata['catalog'] == '-1') {
+                    mydata['catalog'] = -1
+                } else {
+                    mydata['catalog'] = parseInt(mydata['catalog'])
+                }
+                if (mydata['signState'] == '-1') {
+                    mydata['signState'] = -1
+                } else {
+                    mydata['signState'] = parseInt(mydata['signState'])
+                }
+                console.log(mydata);
+                $.ajax({
+                    url: post + "rest/hotel/rzlist.htm",
+                    type: "POST",
+                    data: mydata,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data['state'] == '1') {
+                            console.log(data);
+                            AllPerson(data['resList']);
+                            // window.location.reload()
+                        } else {
+                            alert('未查询到结果');
+                            // AllPerson(data['resList']);
+                        }
+                        // window.location.reload()
+                    }
+                });
+            }
+
+            //点击排序的效果
+            $('.order_table').on('click', function () {
+                console.log('排序条件---------------', '人员名称', $('#PersonName').val(), '来源', $('#Source').val(), '桌号', $('#TableNumber').val(),
+                    '人员类型', $('#PersonType').val(), '报名状态', $('#SingUp').val(), '是否签到', $('#SingIn').val(), '排序', $(this).data('order'));
+                GetSearchData($('#PersonName').val(), $('#bm').val(), $('#yqr').val(), $('#fgs').val(), $('#TableNumber').val(),
+                    $('#PersonType').val(), $('#SingUp').val(), $('#SingIn').val(), $(this).data('order')
+                )
+            });
+            //入住
+            $('#rz').on('click', function () {
+                var EditPersonList = '';
+                var EidtPeronname = '';
+                $('input:checkbox[class="single"]:checked').each(function () {
+                    EditPersonList += $(this).parent().parent().data('id') + ',';
+                    EidtPeronname += $(this).parent().next().data('name') + ',';
+                });
+                var hotel_id = $('#jdmc').val();
+                if (hotel_id == '0') {
+                    hotel_id = ''
+                }
+                var hotel_name = $("#jdmc").find("option:selected").text();
+                var room_number = $('#fjh').val();
+                if (EditPersonList == '') {
+                    alert('对不起，请先选择人员')
+                }
+                if (hotel_name == '-1') {
+                    alert('对不起，请先选择酒店')
+                }
+                if (room_number == '') {
+                    alert('对不起，请先选择房间号')
+                }
+                if (EditPersonList != '' && hotel_name != '' && room_number != '') {
+                    EditPersonList = EditPersonList.substring(0, EditPersonList.length - 1);
+                    EidtPeronname = EidtPeronname.substring(0, EidtPeronname.length - 1);
+                    console.log('酒店编号' + hotel_name, '酒店房间号' + room_number, '选择的人员' + EditPersonList);
+                    $.ajax({
+                        url: post + "rest/hotel/rzbl.htm",
+                        data: {'userId': EditPersonList, 'roomNum': room_number, 'hotelId': hotel_id},
+                        type: "POST",
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data);
+                            if (data['state'] == '1') {
+                                console.log(EidtPeronname + '已经入住到了' + hotel_name + '酒店的' + room_number + '房间');
+                                alert(EidtPeronname + '已经入住到了' + hotel_name + '酒店的' + room_number + '房间');
+                                // window.location.reload()
+                            } else {
+                                alert('入住失败请联系管理人员')
+                            }
+                        }
+                    });
+                }
+
+            });
+
+            //确认签到
+            $('#send').on('click', function () {
+                var EditPersonList = '';
+                var EidtPeronname = '';
+                var person_len = $('input:checkbox[class="single"]:checked').length;
+                $('input:checkbox[class="single"]:checked').each(function () {
+                    EditPersonList += $(this).parent().parent().data('id') + ',';
+                    EidtPeronname += $(this).parent().next().data('name') + ',';
+                });
+                EditPersonList = EditPersonList.substring(0, EditPersonList.length - 1);
+                EidtPeronname = EidtPeronname.substring(0, EidtPeronname.length - 1);
+                $.ajax({
+                    url: post + "sms/send/users/room.htm",
+                    data: {'ids': EditPersonList},
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(EidtPeronname+'共'+person_len+'房间分配已完成');
+                        alert(data);
+                        // window.location.reload()
+                        // alert('短信发送失败请联系管理人员')
+                    }
+                });
+
+            });
+
+            //点击发送短信提示信息
+            $('#send_text').on('click', function () {
+                var EidtPeronname = '';
+                console.log('xxxxxxxxxxxxxxxxxxxxxxxx');
+                var person_len = $('input:checkbox[class="single"]:checked').length;
+                $('input:checkbox[class="single"]:checked').each(function () {
+                    EidtPeronname += $(this).parent().next().data('name') + ',';
+                });
+                EidtPeronname = EidtPeronname.substring(0, EidtPeronname.length - 1);
+                $('#title_info').text(EidtPeronname + '共' + person_len + '人已经发送短信');
+
+
+            })
+        }
+    );
+</script>
+</html>

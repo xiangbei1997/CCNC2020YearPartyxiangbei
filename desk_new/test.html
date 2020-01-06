@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>排桌管理</title>
+    <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<style type="text/css">
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+
+    ul, li {
+        list-style: none;
+    }
+
+    li {
+        float: left;
+        list-style-type: none;
+    }
+
+    .header {
+        min-height: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid darkgray;
+        box-sizing: border-box;
+    }
+
+    .center-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .desk-box {
+        width: 65%;
+        /* padding: 0 20px; */
+        box-sizing: border-box;
+        border-right: 1px solid darkgray;
+    }
+
+    .table-box {
+        width: 35%;
+        position: relative;
+    }
+
+    .table_person {
+        width: 100%;
+    }
+
+    .stage {
+        width: 60%;
+        margin: 50px auto;
+        text-align: center;
+        font-size: 26px;
+        border: 1px solid #16181B;
+    }
+
+    .desk-ul {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-bottom: 5px;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+
+    .desk-li {
+        width: 8%;
+        height: 100px;
+        position: relative;
+    }
+
+    .desk-li p {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin: 0;
+    }
+
+    .desk-li p .span {
+        text-align: center;
+        line-height: 20px;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+    }
+
+    /* .desk-li p .left{
+        background: red;
+    }
+    .desk-li p .right{
+        background: orange;
+    } */
+    .desk-list {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+
+    .desk-li .circle-box {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        background: #DEE2E6;
+    }
+
+    .person_list {
+        width: 100px;
+        position: absolute;
+        left: -10px;
+        bottom: -116px;
+        z-index: 100;
+    }
+
+    .person-list {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .person-item {
+        padding-left: 2px;
+        box-sizing: border-box;
+        width: 49%;
+        height: 25px;
+        position: relative;
+        border: 1px solid #16181B;
+        overflow: hidden;
+        background: darkgray;
+        line-height: 25px;
+        font-size: 14px;
+        margin-bottom: 2px;
+        text-align: center;
+    }
+
+    .person-qiandao {
+        padding-left: 2px;
+        box-sizing: border-box;
+        width: 49%;
+        height: 25px;
+        position: relative;
+        border: 1px solid #16181B;
+        overflow: hidden;
+        background: red;
+        line-height: 25px;
+        font-size: 14px;
+        color: snow;
+        margin-bottom: 2px;
+        text-align: center;
+    }
+
+    .person-baoming {
+        padding-left: 2px;
+        box-sizing: border-box;
+        width: 49%;
+        height: 25px;
+        position: relative;
+        border: 1px solid #16181B;
+        overflow: hidden;
+        background: orange;
+        line-height: 25px;
+        color: snow;
+        font-size: 14px;
+        margin-bottom: 2px;
+        text-align: center;
+    }
+
+    .bao-ming {
+        color: #FFFFFF;
+        background: red;
+    }
+
+    .sign-in {
+        color: #FFFFFF;
+        background: orange;
+    }
+
+    .can-drag:hover {
+        cursor: move;
+    }
+
+    .close-x:hover {
+        cursor: pointer;
+    }
+
+    .close-x {
+        position: absolute;
+        right: 0;
+        top: -7px;
+        z-index: 200;
+        display: inline-block;
+        text-align: center;
+        width: 8px;
+        height: 17px;
+        font-size: 10px;
+        color: black;
+        background: #ffffff;
+    }
+
+    .empty {
+        background: lightgray;
+        color: #000000;
+        text-align: center;
+    }
+
+    .table-red {
+        background: red !important;
+    }
+
+    .all_person_green {
+        background: #B4EEB4 !important;
+    }
+
+    .all_person_yellow {
+        background: #FFD700 !important;
+    }
+
+    .ChangeState {
+        width: 80px;
+    }
+
+    .table td, .table th {
+        padding: 0.15rem;
+        font-size: 18px;
+    }
+
+    .form-inline input {
+        width: 20px;
+        margin: 7px;
+        padding: 10px;
+    }
+
+    .form-inline button {
+        margin: 7px;
+        padding: 6px;
+    }
+
+    #ButtonSearch {
+        margin: 7px;
+        padding: 6px;
+    }
+
+    /*.form{*/
+    /*    top: 0;*/
+    /*}*/
+
+</style>
+<body>
+<!-- 顶部 -->
+<div class="header" style="padding: 15px;width: 100%;">
+    <div style="width: 20;">
+        <h3>排桌管理</h3>
+    </div>
+    <div style="text-align: right;width: 80%;">
+        <button type="button" class="btn btn-primary" style="margin: 0 10px;" data-whatever="@mdo"
+                data-target="#exampleModal"
+                data-toggle="modal">导入
+        </button>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">上传文件</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="page-header">
+                                <form id="uploadForm">
+                                    <div class="form-group" enctype='multipart/form-data'>
+                                        <div class="h4">上传Excel文件</div>
+                                        <div class="fileinput fileinput-new" data-provides="fileinput"
+                                             id="exampleInputUpload">
+                                            <div class="fileinput-new thumbnail"
+                                                 style="width: 200px;height: auto;max-height:150px;">
+
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail"
+                                                 style="max-width: 200px; max-height: 150px;"></div>
+                                            <div>
+                        <span class="">
+                            <span class="fileinput-new">选择文件</span>
+                            <input type="file" name="file" id="file" accept="application/vnd.ms-excel"/>
+                        </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="uploadSubmit">上传</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#change_table" id="ChangeTable">
+            改变桌次
+        </button>
+        <div class="modal fade" id="change_table" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">编辑桌号</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id='SelectChangeTableNumber'>已选择的4位人员修改桌号为：</p><input type="text" value=""
+                                                                                 placeholder="请输入需要修改的桌子编号"
+                                                                                 id="EditTable">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="confirmEdit">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="export">导出</button>
+    </div>
+</div>
+<!-- 中间内容 -->
+<div class="center-container">
+    <!-- 左边桌位显示 -->
+    <div class="desk-box">
+        <div class="stage">舞台</div>
+        <!-- 所有桌子 -->
+        <div class="desk-list" id="weizhi">
+
+        </div>
+    </div>
+    <!-- 右边列表 -->
+    <div class="table-box">
+        <div class="form">
+            <form class="form-inline" id="search">
+                <div class="form-group">
+                    <input type="" class="form-control" placeholder="姓名" id="PersonName">
+                </div>
+                <div class="form-group">
+                    <input type="" class="form-control" id="bm" placeholder="部门">
+                </div>
+                <div class="form-group">
+                    <input type="" class="form-control" id="yqr" placeholder="邀请人">
+                </div>
+                <div class="form-group">
+                    <input type="" class="form-control" id="fgs" placeholder="分公司">
+                </div>
+                <div class="form-group">
+                    <input type="" class="form-control" id="TableNumber" placeholder="桌号">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="PersonType">
+                        <option value=-1>人员类型</option>
+                        <option value=1>嘉宾</option>
+                        <option value=2>分公司</option>
+                        <option value=3>集团总部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="SingUp">
+                        <option value=-1>报名状态</option>
+                        <option value='1'>已报名</option>
+                        <option value='0'>未报名</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="SingIn">
+                        <option value=-1>是否签到</option>
+                        <option value='2'>是</option>
+                        <option value='0'>否</option>
+                    </select>
+                </div>
+                <input type="hidden" class="form-control" id="order" placeholder="排序" value="1">
+                <button type="reset" class="button btn btn-primary">重置</button>
+                <div type="" class="btn btn-primary" id="ButtonSearch">搜索</div>
+            </form>
+        </div>
+        <div class="table_person">
+            <table class="table table-hover" id="tables">
+                <thead class="thead">
+                <tr class="table_head">
+                    <th><input type="checkbox" id="AllElection"></th>
+                    <th>姓名</th>
+                    <th>报名类型</th>
+                    <th>桌号
+                        <button class="order_table" data-order=1>上</button>
+                        <button class="order_table" data-order=0>下</button>
+                    </th>
+                    <th>报名状态</th>
+                    <th>签到</th>
+                </tr>
+                </thead>
+                <tbody class="edit_person" id="tuodong">
+                </tbody>
+            </table>
+            <div class="page" id="Page"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="./js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/FileSaver.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/tableExport.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="./js/Sortable.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+
+            var post = 'https://2020.ccnc.cc';
+            //var post = '127.0.0.1:8866';
+            //初始化数据
+            initData();
+            //左侧数据
+            var data_info = [];
+            //右侧数据
+            var data_person = {};
+            //排桌规则
+            var desk_rule = [];
+
+            //获取排桌规则ajax
+            function initData() {
+                //获取排桌规则ajax
+                $.ajax({
+                    url: post + "/rest/site/findeskuser.htm",
+                    data: {'status': '0'},
+                    type: 'POST',
+                    dataType: 'json',
+                    context: document.body,
+                    success: function (res) {
+                        // desk_rule = res['deskSite']['data']['lineNum'].substring(0, res['deskSite']['data']['lineNum'].length - 1);
+                        if (res['deskSite']['state']!='-1') {
+                            desk_rule = res['deskSite']['data'].split(';');
+                            data_info = res['deskUser'];
+                            console.log(res);
+                            var xx = initDesk();
+                            $(".desk-list").html(xx);
+                        }
+                        // data_info = res['deskUser'];
+                        // //调用方法执行
+                    }
+                });
+                $.ajax({
+                    url: post + "/rest/site/list.htm",
+                    type: 'POST',
+                    data: {'userSignUp': '-1'},
+                    dataType: 'json',
+                    context: document.body,
+                    success: function (res) {
+                        console.log(res, 'list');
+                        AllPerson(res['resList']);
+                    }
+                });
+            }
+
+            //生成左侧所有桌子以及桌子当前相对的人员
+            function initDesk() {
+                var all_desk = '';
+                for (i = 0; i < desk_rule.length; i++) {
+                    console.log(desk_rule[i], '排桌规则', '分隔后的长度', desk_rule.length, i);
+                    var dest_ul = "<ul class=\"desk-ul\">";
+                    var deskNumber = desk_rule[i].split(',');
+                    deskNumber.forEach(function (value, index) {
+                        var table_data = `<li class="desk-li">`;
+                        var piandao = `<p><span>0</span><span>0</span></p>`;
+                        var person = '';
+                        var deskcolour = `<div class="circle-box"  data-tname=\"${value}\" data-colour="0">${value}</div>`;
+                        for (j = 0; j < data_info.length; j++) {
+                            // console.log(data_info[j]['zh'], value);
+                            if (value == data_info[j]['zh']) {
+                                if (data_info[j]['total'] == 10) {
+                                    deskcolour = `<div class="circle-box all_person_green"  data-tname=\"${value}\" data-colour="0">${value}</div>`;
+                                }
+                                piandao = `<p><span class="bao-ming span">${data_info[j]['total']}</span><span class="sign-in span">${data_info[j]['qd']}</span></p>`;
+                                person = `<div class="person_list"><ul class="person-list" style="display: none">`;
+                                var XXpersin = '';
+                                for (x = 0; x < data_info[j]['personlist'].length; x++) {
+                                    if (x > 9) {
+                                        break;
+                                    }
+                                    var persondata = data_info[j]['personlist'][x];
+                                    if (persondata['id'] != 0) {
+                                        if (persondata['state'] == 2) {
+                                            XXpersin += `<li class="person-baoming" style="">${persondata['name']}<span class="close-x" style="" data-myid="${persondata['id']}" data-name="${persondata['name']}">X</span>\n</li>`;
+                                        } else {
+                                            XXpersin += `<li class="person-qiandao" style="">${persondata['name']}<span class="close-x" style="" data-myid="${persondata['id']}" data-name="${persondata['name']}">X</span>\n</li>`;
+                                        }
+                                    } else {
+                                        XXpersin += `<li class="person-item can-drag " style="">无</li>`;
+                                    }
+
+                                }
+                                person += XXpersin + '</ul></div>';
+                                if (data_info[j]['total'] > 10) {
+                                    deskcolour = `<div class="circle-box all_person_yellow"  data-tname=\"${value}\" data-colour="0">${value}</div>`;
+                                }
+                            }
+                        }
+                        // data_info.forEach(function (data,key) {
+                        // });
+                        table_data = table_data + piandao + deskcolour + person + '</li>';
+                        dest_ul += table_data;
+                    });
+                    all_desk += dest_ul + '</ul>';
+                }
+                return all_desk
+            }
+
+            //生成右侧所有人员
+            function AllPerson(PersonList) {
+                var person_position = '';
+                PersonList.forEach(function (items, index) {
+                    //var signtype = items['signtype'].replace('中北工程设计咨询有限公司', '')
+                    var person = `<tr data-tableid="${items['deskName']}" data-personid=${items['deskUserId']}><td><input type="checkbox" value="" class="single"><td>${items['name']}</td><td>${items['signtype']}</td><td><input type="text" value="${items['deskName']}" class="ChangeState"></td><td>${judgeup(items['userSignUp'])}</td><td>${judgein(items['state'])}</td><tr>`;
+                    person_position += person
+                });
+                $(".edit_person").html(person_position);
+            }
+
+            //鼠标滑动过现实桌子人员，
+            $(".desk-list").on('mouseenter', '.desk-li', function () {
+                $(this).find(".person-list").css("display", "block")
+            });
+            //鼠标移开消失
+            $(".desk-list").on('mouseleave', '.desk-li', function () {
+                $(this).find(".person-list").css("display", "none")
+            });
+
+            //点击右侧多个桌子获取桌号在左侧显示右侧点击的桌号人员
+            $(".desk-list").on('click', '.circle-box', function () {
+                if ($(this).hasClass('table-red')) {
+                    $(this).removeClass('table-red');
+                    console.log($(this).data('colour'), 'xxxxxxxxxxxdata', typeof $(this).data('colour'), $(this).data('colour') == 1);
+                    if ($(this).data('colour') == 1) {
+                        console.log('what????');
+                        $(this).addClass('all_person_green');
+                    }
+                    if ($(this).data('colour') == 2) {
+                        $(this).addClass('all_person_yellow');
+                    }
+                } else {
+                    $(this).addClass("table-red");
+                    if ($(this).hasClass('all_person_green')) {
+                        $(this).removeClass('all_person_green');
+                        $(this).attr('data-colour', '1');
+                    }
+                    if ($(this).hasClass('all_person_yellow')) {
+                        $(this).removeClass('all_person_yellow');
+                        $(this).attr('data-colour', '2');
+                    }
+                }
+
+
+                var arrPrePrice = '';
+                $('.table-red').each(function () {
+                    arrPrePrice += $(this).text() + ','
+                });
+                arrPrePrice = arrPrePrice.substr(0, arrPrePrice.length - 1);
+                $.ajax({
+                    url: post + "/rest/site/total.htm",
+                    data: {'deskName': arrPrePrice},
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data, '点击右边桌子');
+                        if (data['state'] == '1') {
+                            AllPerson(data['resList'])
+                        } else {
+                            AllPerson([])
+                        }
+                    }
+                });
+            });
+
+            //根据人员报名状态
+            function judgeup(state) {
+                var mystate = '未报名';
+                if (state == 1) {
+
+                    mystate = '已报名'
+                }
+                return mystate
+            }
+
+            //根据人员签到状态
+            function judgein(state) {
+                var mystate = '否';
+                if (state == 2) {
+                    mystate = '是'
+                }
+                return mystate
+            }
+
+            //改变人员当前桌号（右侧）
+            $('#tables').on('change', '.ChangeState', function () {
+                var current_person_name = $(this).parent().prev().prev().text();
+                var current_table_name = $(this).parent().parent().data('tableid');
+                var current_person_id = $(this).parent().parent().data('personid');
+                var new_table_name = $(this).val();
+                console.log({'userId': current_person_id, 'deskName': new_table_name});
+                $.ajax({
+                    url: post + "/rest/site/changedesk.htm",
+                    data: {'userId': String(current_person_id), 'deskName': new_table_name},
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data['state'] == 1) {
+                            alert(current_person_name + '修改后为' + new_table_name);
+                            // window.location.reload()
+                        } else {
+                            alert('当前桌子人数上限无法修改')
+                        }
+
+                    }
+                });
+            });
+
+            //默认全选不选（右侧）
+            function intoSelect() {
+                $("#AllElection").attr("checked", false);
+            }
+
+            //点击全选的状态（右侧）
+            $(".table_head").on("click", '#AllElection', function () {
+                if ($(this).prop("checked")) {
+                    for (let i = 0; i < $(".single").length; i++) {
+                        $(".single")[i].checked = true;
+                    }
+                } else {
+                    for (let i = 0; i < $(".single").length; i++) {
+                        $(".single")[i].checked = false;
+                    }
+                }
+            });
+
+
+            //点击单个选择的状态改变
+            $(".edit_person").on("click", '.single', function () {
+                var isAll = true;
+                for (let i = 0; i < $(".single").length; i++) {
+                    if ($(".single")[i].checked == false) {
+                        isAll = false;
+                        $("#AllElection").prop("checked", false);
+                    }
+                }
+                if (isAll) {
+                    $("#AllElection").prop("checked", true);
+                }
+            });
+
+
+            //点击搜索执行（右侧）
+            $("#ButtonSearch").on("click", function () {
+                console.log('搜索条件--------------', '人员名称', $('#PersonName').val(), '来源', $('#Source').val(), '桌号', $('#TableNumber').val(),
+                    '人员类型', $('#PersonType').val(), '报名状态', $('#SingUp').val(), '是否签到', $('#SingIn').val(), '排序', $('#order').val());
+                GetSearchData($('#PersonName').val(), $('#bm').val(), $('#yqr').val(),
+                    $('#fgs').val(), $('#TableNumber').val(),
+                    $('#PersonType').val(), $('#SingUp').val(), $('#SingIn').val(), $('#order').val()
+                )
+            });
+
+            //搜索，分页，排序公用的
+            function GetSearchData(PersonName, bm, yqr, fgs, TableNumber, PersonType, SingUp, SingIn, order) {
+                var mydata = {
+                    'name': PersonName,
+                    'bm': bm,
+                    'fgs': fgs,
+                    'yqr': yqr,
+                    'deskName': TableNumber,
+                    'catalog': PersonType,
+                    'userSignUp': SingUp,
+                    'state': SingIn,
+                    'orders': order
+                };
+                if (mydata['catalog'] == '-1') {
+                    mydata['catalog'] = -1
+                } else {
+                    mydata['catalog'] = parseInt(mydata['catalog'])
+                }
+
+                if (mydata['userSignUp'] == '-1') {
+                    mydata['userSignUp'] = -1
+                } else {
+                    mydata['userSignUp'] = parseInt(mydata['userSignUp'])
+                }
+
+                if (mydata['state'] == '-1') {
+                    mydata['state'] = -1
+                } else {
+                    mydata['state'] = parseInt(mydata['state'])
+                }
+
+                mydata['orders'] = parseInt(mydata['orders']);
+                console.log(mydata);
+                $.ajax({
+                    url: post + "/rest/site/list.htm",
+                    type: "POST",
+                    data: mydata,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data)
+                        if (data['state'] == '1') {
+                            console.log(data);
+                            AllPerson(data['resList']);
+                        } else {
+                            alert('未查询到结果');
+                            AllPerson(data['resList']);
+                        }
+                        // window.location.reload()
+                    }
+                });
+            }
+
+            //点击排序的效果
+            $('.order_table').on('click', function () {
+                console.log('排序条件---------------', '人员名称', $('#PersonName').val(), '来源', $('#Source').val(), '桌号', $('#TableNumber').val(),
+                    '人员类型', $('#PersonType').val(), '报名状态', $('#SingUp').val(), '是否签到', $('#SingIn').val(), '排序', $(this).data('order'));
+                GetSearchData($('#PersonName').val(), $('#bm').val(), $('#yqr').val(), $('#fgs').val(), $('#TableNumber').val(),
+                    $('#PersonType').val(), $('#SingUp').val(), $('#SingIn').val(), $(this).data('order')
+                )
+            });
+
+
+            //批量修改当前选择人员数量
+            $('#ChangeTable').on('click', function () {
+                var ChangePersonNumber = '已选择的' + $('input:checkbox[class="single"]:checked').length + '位人员修改桌号为：';
+                $('#SelectChangeTableNumber').html(ChangePersonNumber);
+            });
+
+
+            //确认批量修改
+            $('#confirmEdit').on('click', function () {
+                var EditPersonList = '';
+                $('input:checkbox[class="single"]:checked').each(function () {
+                    EditPersonList += $(this).parent().parent().data('personid') + ','
+                });
+                EditPersonList = EditPersonList.substring(0, EditPersonList.length - 1);
+                console.log({'deskName': $('#EditTable').val(), 'userId': EditPersonList});
+                $.ajax({
+                    url: post + "/rest/site/changedesk.htm",
+                    data: {'deskName': $('#EditTable').val(), 'userId': EditPersonList},
+                    type: "POST",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data['state'] == '1') {
+                            console.log('修改完成');
+                            // window.location.reload()
+                        } else {
+                            alert('对不起当前修改的当前人数超过桌子总人数')
+                        }
+                    }
+                });
+
+            });
+
+
+            //上传Excel文件
+            $('#uploadSubmit').click(function () {
+                var data = new FormData($('#uploadForm')[0]);
+                $.ajax({
+                    url: post + "/rest/site/import.htm",
+                    type: 'POST',
+                    data: data,
+                    async: false,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data['state'] == 1) {
+                            alert(data['msg'] + '-点击后自动刷新');
+                            setTimeout(function () {//两秒后跳转
+                                window.location.reload();
+                            }, 500);
+                        } else {
+                            if (data['fail']) {
+                                alert(data['fail']);
+                                console.log(data['fail'])
+                            }
+                            if (data['msg']) {
+                                alert(data['msg']);
+                                console.log(data['msg'])
+                            }
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data.status);
+                    }
+                });
+            });
+
+
+            //导出excel文件
+            $('#export').click(function () {
+                var $eleForm = $("<form method='get'></form>");
+                $eleForm.attr("action", post + "/rest/site/exprot.htm");
+                $(document.body).append($eleForm);
+                //提交表单，实现下载
+                $eleForm.submit();
+            });
+
+
+            //删除当前桌子人员
+            $('.desk-list').on('click', '.close-x', function () {
+                var personID = $(this).data('myid');
+                console.log(personID, '删除ID');
+                var personName = $(this).data('name');
+                var tableID = $(this).parent().parent().parent().prev().data('tname');
+                if ($(this).data('name') != '0') {
+                    $.ajax({
+                        url: post + "/rest/site/delguest.htm",
+                        data: {'userId': personID},
+                        type: "POST",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data['state'] == '1') {
+                                alert('已经从' + tableID + '号桌子移除' + personName);
+                                // window.location.reload()
+                            }
+                        }
+                    });
+                } else {
+                    alert('空值无法删除')
+                }
+            });
+
+
+        }
+    );
+</script>
+</html>
